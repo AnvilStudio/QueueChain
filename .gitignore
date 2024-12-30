@@ -4,6 +4,7 @@
 ## Get latest from https://github.com/github/gitignore/blob/master/VisualStudio.gitignore
 
 # User-specific files
+.vs/
 *.rsuser
 *.suo
 *.user
@@ -17,6 +18,7 @@
 mono_crash.*
 
 # Build results
+build/
 [Dd]ebug/
 [Dd]ebugPublic/
 [Rr]elease/
@@ -97,6 +99,8 @@ StyleCopReport.xml
 *.pidb
 *.svclog
 *.scc
+*.sln
+*.vcxproj
 
 # Chutzpah Test files
 _Chutzpah*
