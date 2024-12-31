@@ -18,7 +18,7 @@ int main() {
     StressTest_ConcurrentTaskSubmission(Queuechain);
     StressTest_EmptyQueue(Queuechain);
     StressTest_MixedOperations(Queuechain);
-    StressTest_ContinuousExecution(Queuechain, 10); // 10 seconds
+    StressTest_ContinuousExecution(Queuechain, 30); // 30 seconds
 
     std::cout << "Testing completed\n";
 

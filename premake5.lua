@@ -12,6 +12,6 @@ project "QueueChain"
     files
     {
         "**.cpp",
-        "**.hpp"
+        "**.h"
     }
 

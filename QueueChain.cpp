@@ -1,7 +1,12 @@
 #include "QueueChain.h"
 
 
-QueueChain::QueueChain() : m_StopProc(false), m_MainRdy(false), m_ProcRdy(false) {}
+QueueChain::QueueChain() : m_StopProc(false), m_MainRdy(false), m_ProcRdy(false) 
+{
+    m_Front  = new CmdQueue();
+    m_Middle = new CmdQueue();
+    m_Back   = new CmdQueue();
+}
 
 QueueChain::~QueueChain() {
     Stop();
@@ -25,7 +30,7 @@ void QueueChain::Stop() {
 
 void QueueChain::WriteToBack(const std::function<void()>& task) {
     std::lock_guard<std::mutex> lock(m_QueueMutex);
-    m_Back.push(task);
+    m_Back->push(task);
     //std::cout << "[Main] Task added to back queue.\nNew size: " << back.size() << '\n' << std::flush;
 }
 
@@ -51,14 +56,14 @@ void QueueChain::Swap() {
     //    << "middle size: " << middle.size() << "\n"
     //    << "back size: " << back.size() << "\n";
 
-    if (m_Back.empty()) {
+    if (m_Back->empty()) {
         //std::cout << "[Main] Back queue is empty. No swap performed.\n";
         return;
     }
 
     // Rotate queues
-    std::swap(m_Front, m_Back);
-    std::swap(m_Back, m_Middle);
+    std::swap(m_Front, m_Middle);
+    std::swap(m_Middle, m_Back);
 
     //std::cout << "[Main] After swap:\n"
     //    << "front size: " << front.size() << "\n"
@@ -89,15 +94,15 @@ void QueueChain::ProcessFrontQueue() {
 
         //std::cout << "[Processing] Woke up, processing front queue.\n";
 
-        if (m_Front.empty())
+        if (m_Front->empty())
         {
                 
         }
 
         else{
-            while (!m_Front.empty()) {
-                auto task = m_Front.front();
-                m_Front.pop();
+            while (!m_Front->empty()) {
+                auto task = m_Front->front();
+                m_Front->pop();
                 lock.unlock();
                 //std::cout << "[Processing] Running cmd\n";
                 if (task) task();

@@ -22,6 +22,9 @@
 
 class QueueChain {
 public:
+
+    using CmdQueue = std::queue<std::function<void()>>;
+
     QueueChain();
 
     ~QueueChain();
@@ -40,9 +43,9 @@ public:
 
 
 private:
-    std::queue<std::function<void()>> m_Front;
-    std::queue<std::function<void()>> m_Middle;
-    std::queue<std::function<void()>> m_Back;
+    CmdQueue* m_Front  = nullptr;
+    CmdQueue* m_Middle = nullptr;
+    CmdQueue* m_Back   = nullptr;
 
     std::mutex m_QueueMutex;
     std::condition_variable m_QueueCondition;
